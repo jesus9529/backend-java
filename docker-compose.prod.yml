@@ -4,17 +4,10 @@ services:
   springboot-app:
     build:
       context: .
-      dockerfile: Dockerfile
-    volumes:
-      - .:/app  # Montar el código fuente en el contenedor
-      - /app/.mvn  # Cache Maven
+      dockerfile: Dockerfile.builder
     ports:
-      - "8080:8080"  # Mapear el puerto de desarrollo
-    command: ["./mvnw", "spring-boot:run", "-Dspring-boot.run.profiles=dev"]
+      - "8080:8080" # Mapea el puerto 8080 del contenedor al host
     environment:
-      SPRING_DEVTOOLS_REMOTE_SECRET: secret
-      JAVA_OPTS: -Dspring.devtools.restart.enabled=true -Dspring.devtools.livereload.enabled=true
-      SPRING_PROFILES_ACTIVE: dev
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mydatabase
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
@@ -23,7 +16,6 @@ services:
       - postgres # Asegura que PostgreSQL esté disponible antes de iniciar la app
     networks:
       - app-network
-    restart: unless-stopped
 
   postgres:
     image: postgres:15
