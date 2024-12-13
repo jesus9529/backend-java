@@ -12,7 +12,10 @@ services:
       - "8080:8080"  # Mapear el puerto de desarrollo
     command: ["./mvnw", "spring-boot:run", "-Dspring-boot.run.profiles=dev"]
     environment:
-      SPRING_DEVTOOLS_REMOTE_SECRET: secret
+      CORS_ALLOWED_ORIGINS: '*'
+      # CORS_ALLOWED_ORIGINS: http://localhost:4200,http://example.com
+      CORS_ALLOWED_METHODS: '*'
+      # CORS_ALLOWED_METHODS: GET,POST,PUT,DELETE
       JAVA_OPTS: -Dspring.devtools.restart.enabled=true -Dspring.devtools.livereload.enabled=true
       SPRING_PROFILES_ACTIVE: dev
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mydatabase
