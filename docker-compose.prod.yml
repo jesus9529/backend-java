@@ -1,25 +1,28 @@
 version: '3.8'
 
 services:
-  springboot-app:
+  springboot-app-prod:
     build:
       context: .
-      dockerfile: Dockerfile.builder
+      dockerfile: Dockerfile.prod
     ports:
       - "8080:8080" # Mapea el puerto 8080 del contenedor al host
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mydatabase
+      CORS_ALLOWED_ORIGINS: http://localhost
+      CORS_ALLOWED_METHODS: GET,POST,PUT,DELETE
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-prod:5432/mydatabase
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     depends_on:
-      - postgres # Asegura que PostgreSQL esté disponible antes de iniciar la app
+      - postgres-prod # Asegura que PostgreSQL esté disponible antes de iniciar la app
     networks:
-      - app-network
+      - prod-app-network
+    restart: unless-stopped
 
-  postgres:
+  postgres-prod:
     image: postgres:15
-    container_name: postgres
+    container_name: postgres-prod
     ports:
       - "5432:5432"
     environment:
@@ -27,13 +30,13 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: mydatabase
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - prod-postgres-data:/var/lib/postgresql/data
     networks:
-      - app-network
+      - prod-app-network
 
 networks:
-  app-network:
+  prod-app-network:
     driver: bridge
 
 volumes:
-  postgres-data:
+  prod-postgres-data:

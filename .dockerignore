@@ -1,0 +1,37 @@
+# Ignorar archivos y directorios innecesarios
+
+# Archivos de compilación
+target/
+build/
+
+# Archivos de configuración de IDEs
+.idea/
+*.iml
+*.class
+
+# Archivos de configuración y logs
+*.log
+*.swp
+
+# Dependencias locales y cachés
+.mvn/
+# .mvnw.*
+*.jar
+*.war
+
+# Archivos de control de versiones
+.git/
+.gitignore
+.gitattributes
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Archivos de CI/CD
+.github/
+.vscode/
+*.yml
+*.yaml
+*.env
