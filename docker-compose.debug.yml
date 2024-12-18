@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  springboot-app-debug:
+    build:
+      context: .
+      dockerfile: Dockerfile.debug
+    ports:
+      - "8080:8080" # Mapea el puerto 8080 del contenedor al host
+      - "5005:5005"
+    environment:
+      CORS_ALLOWED_ORIGINS: http://localhost
+      CORS_ALLOWED_METHODS: GET,POST,PUT,DELETE
+      JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,address=*:5005,server=y,suspend=n
+      JAVA_OPTS: -Dspring.devtools.restart.enabled=true -Dspring.devtools.livereload.enabled=true
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-debug:5432/mydatabase
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - postgres-debug # Asegura que PostgreSQL esté disponible antes de iniciar la app
+    networks:
+      - debug-app-network
+    restart: unless-stopped
+
+  postgres-debug:
+    image: postgres:15
+    container_name: postgres-debug
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mydatabase
+    volumes:
+      - debug-postgres-data:/var/lib/postgresql/data
+    networks:
+      - debug-app-network
+
+networks:
+  debug-app-network:
+    driver: bridge
+
+volumes:
+  debug-postgres-data:

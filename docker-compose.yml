@@ -1,7 +1,5 @@
-version: '3.8'
-
 services:
-  springboot-app-dev:
+  springboot-app:
     build:
       context: .
       dockerfile: Dockerfile
@@ -10,10 +8,8 @@ services:
       - /app/.mvn  # Cache Maven
     ports:
       - "8080:8080"  # Mapear el puerto de desarrollo
-      - "5005:5005"
     command: ["./mvnw", "spring-boot:run", "-Dspring-boot.run.profiles=dev"]
     environment:
-      # JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
       CORS_ALLOWED_ORIGINS: '*'
       CORS_ALLOWED_METHODS: '*'
       JAVA_OPTS: -Dspring.devtools.restart.enabled=true -Dspring.devtools.livereload.enabled=true

@@ -14,8 +14,6 @@ build/
 *.swp
 
 # Dependencias locales y cachés
-# .mvn/
-# .mvnw.*
 *.jar
 *.war
 
