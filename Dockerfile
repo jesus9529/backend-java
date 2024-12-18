@@ -1,5 +1,5 @@
 # Imagen base de desarrollo
-FROM eclipse-temurin:17-jdk-alpine as base
+FROM eclipse-temurin:17-jdk-alpine
 
 # Crear un directorio de trabajo
 WORKDIR /app

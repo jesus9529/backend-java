@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-PostsApplication<posts>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.posts.posts.PostsApplication",
+            "projectName": "posts",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot from Container",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": 5005
+        },
+    ]
+}
