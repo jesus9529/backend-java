@@ -20,8 +20,17 @@ FROM eclipse-temurin:17-jre-alpine
 # Establece el directorio de trabajo
 WORKDIR /app
 
+# Crea un usuario y grupo no privilegiados
+RUN addgroup --system appgroup && adduser --system --no-create-home --ingroup appgroup appuser
+
+# Cambia los permisos del directorio de trabajo
+RUN chown -R appuser:appgroup /app
+
 # Copia el JAR desde la etapa anterior
 COPY --from=build /app/target/*.jar app.jar
+
+# Cambia al usuario no root
+USER appuser
 
 # Exponer el puerto del servidor
 EXPOSE 8080
