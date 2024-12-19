@@ -1,0 +1,40 @@
+services:
+  springboot-app-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - "${SPRINGBOOT_APP_PORT:-8080}:8080" # Usa la variable SPRINGBOOT_APP_PORT o 8080 por defecto
+    environment:
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost}
+      CORS_ALLOWED_METHODS: ${CORS_ALLOWED_METHODS:-GET,POST,PUT,DELETE}
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL:-jdbc:postgresql://postgres-prod:5432/mydatabase}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO:-update}
+    depends_on:
+      - postgres-prod
+    networks:
+      - prod-app-network
+    restart: unless-stopped
+
+  postgres-prod:
+    image: ${POSTGRES_IMAGE:-postgres:15}
+    container_name: ${POSTGRES_CONTAINER_NAME:-postgres-prod}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-mydatabase}
+    volumes:
+      - prod-postgres-data:/var/lib/postgresql/data
+    networks:
+      - prod-app-network
+
+networks:
+  prod-app-network:
+    driver: bridge
+
+volumes:
+  prod-postgres-data:
