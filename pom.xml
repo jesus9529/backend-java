@@ -64,7 +64,14 @@
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
-
+	<profiles>
+		<profile>
+			<id>debug</id>
+			<properties>
+				<spring-boot.run.jvmArguments>-agentlib:jdwp=transport=dt_socket,address=*:5005,server=y,suspend=n</spring-boot.run.jvmArguments>
+			</properties>
+    	</profile>
+	</profiles>
 	<build>
 		<plugins>
 			<plugin>
